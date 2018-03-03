@@ -1,25 +1,41 @@
-#include "myheader.h"
-#include "Student.h"
-#include "RequestManage.h"
-#include "Client.h"
-#include "ClientManagement.h"
+using namespace std;
+#define MAXUSERS 100
+#define MAXQUESIZE 10000
+#define QUERYSIZE 1024
+#define COMMANDSIZE 1024
+
+#include<iostream>
+#include<sstream>
+#include<string>
+#include<fstream>
+#include<vector>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<arpa/inet.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<queue>
+#include<pthread.h>
+#include<unistd.h>
+#include<cstring>
+#include<set>
+
+#include"RequestManS.h"
+#include"Client.h"
+#include"ClientManS.h"
+
+ClientManS* ClientManS::cptr = NULL;
+RequestManS* RequestManS::rptr = NULL;
 
 int main(){
-	cout << "Welcome to Student File Management System(1.0)" << endl << 
-		"Established by Jiange Zhao, 2017.11" << endl << 
-		"Copyright Reserved. Don't email me, it is a test program!)" << endl;
+	RequestManS* rman = RequestManS::getInstance();
+	ClientManS* cman = ClientManS::getInstance();
 
-	RequestManage manager;	
-	ClientManagement cadm(manager);
-
-	if(!cadm.setup()){
-		cerr << "Cannot setup server, going to exit..." << endl;
+	if(!cman->setup())
 		exit(1);
-	}
 
-	while(cadm.doListening(1)){
-		manager.doProcess(1);
-	}
+	while(1)
+		rman->processing();
 
 	return 0;
 }

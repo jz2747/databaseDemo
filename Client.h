@@ -2,14 +2,33 @@ class Client{
 	private:
 		int socket;
 		string uname;
-		RequestManage* mptr;
+		set<string> usableTs;
+		
+		bool inflateS(){
+		
+			return true;
+		}
 	
 	public:
-		Client(int s, string un, RequestManage* m){
+		Client(string name){
+			uname = name;
+			inflateS();
+		}
+		
+		Client(int s, string name){
 			socket = s;
-			uname = un;
-			mptr = m;
+			uname = name;
+			inflateS();
+		}
+		
+		string getUname(){
+			return uname;
 		}
 
+		bool authorize(string tName){
+			if(usableTs.find(tName) != usableTs.end())
+				return true;
+			return false;
+		}
 		
 };
